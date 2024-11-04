@@ -1,24 +1,43 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "pytest-aioboto3"
 version = "0.3.0"
 description = "Aioboto3 Pytest with Moto"
-authors = ["Shipwell Engineering", "Phillip Verheyden"]
+authors = [
+    { name = "Shipwell Engineering", email = "engineering@shipwell.com" },
+    { name = "Phillip Verheyden", email = "phillip@shipwell.com" },
+    { name = "Constantin Teodorescu", email = "teocns@gmail.com" },
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-aioboto3 = ">=12.0.0"
-moto = {extras = ["s3", "server"], version = ">=4.2.3"}
-types-aiobotocore = {extras = ["s3"], version = ">=2.7.0"}
-requests = ">=2.0"
+dependencies = [
+    "aioboto3>=12.0.0",
+    "moto>=4.2.3",
+    "types-aiobotocore>=2.7.0",
+    "requests>=2.0",
+]
+    
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.4.3"
-boto3-stubs = {extras = ["s3"], version = "^1.28.70"}
-pytest-asyncio = "^0.21.1"
+[tool.hatch.build.targets.wheel]
+packages = ["pytest_aioboto3"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+
+
+[tool.rye]
+managed = true
+virtual = false
+universal = true
+
+dev-dependencies = [
+    "pytest>=7.4.3",
+    "boto3-stubs>=1.28.70",
+    "pytest-asyncio>=0.21.1",
+]
 
 [tool.pytest.ini_options]
 testpaths = [
@@ -30,5 +49,7 @@ filterwarnings = [
 ]
 asyncio_mode = "auto"
 
-[tool.poetry.plugins."pytest11"]
-pytest-aioboto3 = 'pytest_aioboto3'
+[tool.pytest.plugins]
+name = "pytest-aioboto3"
+version = "0.3.0"
+module = "pytest_aioboto3"
