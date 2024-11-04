@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import logging
 import shutil
 import signal
@@ -29,7 +30,14 @@ def start_moto_server(service_name: str, host: str, port: int) -> Popen[Any]:
         raise ValueError(
             "Could not find a path to moto_server, is it installed in the virtualenvironment?"
         )
-    args = [moto_svr_path, service_name, "-H", host, "-p", str(port)]
+    args = [
+        moto_svr_path,
+        # service_name,  # Newer moto version does not require the service name
+        "-H",
+        host,
+        "-p",
+        str(port),
+    ]
     # For debugging
     # args = f"moto_svr_path service_name -H host -p port 2>&1 | tee -a /tmp/moto.log"
     logger.info(f"Starting moto server: {args}")
